@@ -1,0 +1,41 @@
+<!-- ======= Header Section ======= -->
+<%- include('partials/header') %> 
+<!-- End Header -->
+
+    <!-- ======= Navbar Section ======= -->
+        <%- include('partials/nav') %>
+    <!-- End Navbar -->
+
+    <!-- ======= Main Section ======= -->
+        <main id="main">
+            <section id="contact" class="contact">
+                <div class="container" data-aos="fade-up">
+                    <div class="section-title">
+                        <h2>OTP Confirmation</h2>
+                        <p>Enter the OTP sent to your email to access the teacher's dashboard. If you didn't receive the code, <a href="/contact">click here to contact the admin</a>.</p>
+                    </div>
+                    <form action="/verify-otp" method="post" role="form" class="php-email-form">
+                        <% if(error){ %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= message %>
+                            </div>
+                        <% } %>
+                        <input type="hidden" name="name" value="<%= mwalimu.name %>">
+                        <input type="hidden" name="email" value="<%= mwalimu.email %>">
+                        <input type="hidden" name="password" value="<%= mwalimu.password %>">
+                        <input type="hidden" name="id" value="<%= newId %>">
+                        <div class="row gy-2 gx-md-3">
+                            <div class="form-group col-12">
+                                <label for="otp">Enter OTP</label>
+                                <input type="text" class="form-control" name="otp" id="otp" />
+                            </div>
+                            <div class="text-center col-12">
+                                <button type="submit">Confirm OTP</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>            
+        </main>
+    <!-- End #main -->
+<%- include('partials/ending') %>

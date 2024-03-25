@@ -1,0 +1,59 @@
+<!-- ======= Header Section ======= -->
+<%- include('partials/header') %> 
+<!-- End Header -->
+
+    <!-- ======= Navbar Section ======= -->
+        <%- include('partials/nav') %>
+    <!-- End Navbar -->
+
+    <!-- ======= Main Section ======= -->
+        <main id="main">
+            <section id="contact" class="contact">
+                <div class="container" data-aos="fade-up">
+                    <div class="section-title">
+                        <h2>Table Creation</h2>
+                        <p>To proceed, create a table for the latest results</p>
+                    </div>
+                    <form action="/create-table" method="post" role="form" class="php-email-form">
+                        <% if(error){ %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= message %>
+                            </div>
+                        <% } %>
+                        <div class="row gy-2 gx-md-3">
+                            <div class="form-group col-12">
+                                <label for="tablename">Table Name</label>
+                                <input type="text" class="form-control" name="tablename" id="tablename" />
+                            </div>
+                            <div class="text-center col-12">
+                                <button type="submit">Enter Tablename</button>
+                            </div>
+                        </div>
+                    </form>
+                    <form id="uploadForm" action="/uploadworkbook" method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" id="fileInput" accept=".xlsx">
+                        <button type="submit">Upload</button>
+                    </form>
+                    <div id="preview"></div>
+                    <script>
+                        const fileInput = document.getElementById('fileInput');
+                        const preview = document.getElementById('preview');
+                
+                        fileInput.addEventListener('change', function(event) {
+                            const file = event.target.files[0];
+                            const reader = new FileReader();
+                
+                            reader.onload = function(e) {
+                                const content = e.target.result;
+                                preview.innerHTML = `<p>File preview:</p><pre>${content}</pre>`;
+                                preview.style.display = 'block';
+                            };
+                
+                            reader.readAsText(file);
+                        });
+                    </script>
+                </div>
+            </section>            
+        </main>
+    <!-- End #main -->
+<%- include('partials/ending') %>
