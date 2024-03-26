@@ -39,6 +39,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 app.use((req, res, next) => {
+    res.locals.username = req.session.username
     res.locals.isLogedIn = (req.session.userID !== undefined)
     next()
 })
