@@ -6,46 +6,52 @@
         <%- include('partials/nav') %>
     <!-- End Navbar -->
 
-    <!-- ======= Hero Section ======= -->
-        <%- include('partials/hero') %>
-    <!-- End Hero -->
-
-    <!-- ======= Main Section ======= -->
-        <main id="main">
-            <!-- ======= About Section ======= -->
-                <%- include('partials/about') %>
-            <!-- End About Section -->
-
-            <!-- ======= Counts Section ======= -->
-                <%- include('partials/count') %>
-            <!-- End Counts Section -->
-
-            <!-- ======= Testimonials Section ======= -->
-                <%- include('partials/testimonial') %>
-            <!-- End Testimonials Section -->
-
-            <!-- ======= Services Section ======= -->
-                <%- include('partials/service') %>
-            <!-- End Sevices Section -->
-
-            <!-- ======= Team Section ======= -->
-                <%- include('partials/team') %>
-            <!-- End Team Section -->
-
-            <!-- ======= Pricing Section ======= -->
-                <%- include('partials/pricing') %>
-            <!-- End Pricing Section -->
-
-            <!-- ======= Frequently Asked Questions Section ======= -->
-                <%- include('partials/FAQs') %>
-            <!-- End Frequently Asked Questions Section -->
-
-            <!-- ======= Contact Section ======= -->
-                <%- include('partials/contact') %>
-            <!-- End Contact Section -->
-        </main>
-    <!-- End #main -->
-
+    <section id="hero" class="d-flex align-items-center">
+        <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+            <div class="row justify-content-center">
+                <div class="col-xl-7 col-lg-9 text-center">
+                    <h1>CALAFILES</h1>
+                    <h2>Welcome to CAALAFILES <%= locals.username %>!</h2>
+                    <p>Discover the power of CALAFILES, a comprehensive platform designed to enhance academic management and student engagement for educators like yourself.</p>
+                </div>
+            </div>
+    
+            <div class="row icon-boxes">
+                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bi bi-cloud-arrow-up"></i></div>
+                        <h4 class="title"><a href="">Upload Notes</a></h4>
+                        <p class="description">Effortlessly upload and manage academic notes in PDF format.</p>
+                    </div>
+                </div>
+            
+                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="icon-box">
+                        <div class="icon"><i class="ri-eye-line"></i></div>
+                        <h4 class="title"><a href="">Track Progress</a></h4>
+                        <p class="description">Utilize progress tracking tools to monitor student performance.</p>
+                    </div>
+                </div>
+            
+                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="icon-box">
+                        <div class="icon"><i class="ri-mail-send-line"></i></div>
+                        <h4 class="title"><a href="">Student Chatroom</a></h4>
+                        <p class="description">Engage students and tutors through a dedicated chatroom.</p>
+                    </div>
+                </div>
+            
+                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="500">
+                    <div class="icon-box">
+                        <div class="icon"><i class="ri-tools-line"></i></div>
+                        <h4 class="title"><a href="">Management Tools</a></h4>
+                        <p class="description">Access administrative tools for efficient academic management.</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
     <!-- ======= Footer ======= -->
         <%- include('partials/footer') %>
     <!-- End Footer -->
