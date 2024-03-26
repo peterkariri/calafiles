@@ -1,0 +1,30 @@
+<!-- ======= Header Section ======= -->
+<%- include('partials/header') %> 
+<!-- End Header -->
+
+    <!-- ======= Navbar Section ======= -->
+        <%- include('partials/nav') %>
+    <!-- End Navbar -->
+
+    <!-- ======= Main Section ======= -->
+        <main id="main">
+            <h4 class="title"><a href="/notes-pdf/<%= file.filename %>"><%= file.title %></a></h4>
+            <p class="description"><%= file.def %></p>
+            <div style="display: flex; justify-content: space-between;">
+                <a href="/pdf/<%= file.filename %>" download="<%= file.title %>" class="download-link" style="font-size: 15px;">Download <i class="bi bi-download"></i></a>
+                <a href="/notes-pdf/<%= file.filename %>" style="font-size: 15px;">Preview <i class="bi bi-arrows-angle-expand"></i></a>
+            </div>
+            <section class="pdf-preview-section" style="padding: 20px; background-color: #f7f7f7;">
+                <embed src="/pdf/<%= file.filename %>" type="application/pdf" width="100%" height="600px" style="border: 2px solid #ccc; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" class=""/>
+            </section>
+            
+            <!-- ======= Contact Section ======= -->
+                <!-- <%- include('partials/contact') %> -->
+            <!-- End Contact Section -->
+        </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+        <%- include('partials/footer') %>
+    <!-- End Footer -->
+<%- include('partials/ending') %>
