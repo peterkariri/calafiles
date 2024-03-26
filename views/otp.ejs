@@ -12,7 +12,7 @@
                 <div class="container" data-aos="fade-up">
                     <div class="section-title">
                         <h2>OTP Confirmation</h2>
-                        <p>Enter the OTP sent to your email to access the teacher's dashboard. If you didn't receive the code, <a href="/contact">click here to contact the admin</a>.</p>
+                        <p>Enter the OTP sent to your email to complete registration. If you didn't receive the code, <a href="/contact">click here to contact the admin</a>.</p>
                     </div>
                     <form action="/verify-otp" method="post" role="form" class="php-email-form">
                         <% if(error){ %>
@@ -20,9 +20,9 @@
                                 <%= message %>
                             </div>
                         <% } %>
-                        <input type="hidden" name="name" value="<%= mwalimu.name %>">
-                        <input type="hidden" name="email" value="<%= mwalimu.email %>">
-                        <input type="hidden" name="password" value="<%= mwalimu.password %>">
+                        <input type="hidden" name="name" value="<%= user.name %>">
+                        <input type="hidden" name="email" value="<%= user.email %>">
+                        <input type="hidden" name="password" value="<%= user.password %>">
                         <input type="hidden" name="id" value="<%= newId %>">
                         <div class="row gy-2 gx-md-3">
                             <div class="form-group col-12">

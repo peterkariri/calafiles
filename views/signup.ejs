@@ -12,7 +12,7 @@
                 <div class="container" data-aos="fade-up">
                     <div class="section-title">
                         <h2>Sign Up</h2>
-                        <p>Enter your details to access the teachers dashboard</p>
+                        <p>Enter your details to Sign Up</p>
                     </div>
                     <form action="/signup" method="post" role="form" class="php-email-form">
                         <% if(error){ %>
@@ -23,16 +23,16 @@
                         <div class="row gy-2 gx-md-3">
                             <div class="col-md-6 form-group">
                                 <label for="name">Your Name</label>
-                                <input type="text" class="form-control" name="name" value="<%= mwalimu.name %>" required id="name" />
+                                <input type="text" class="form-control" name="name" value="<%= user.name %>" required id="name" />
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="email">Your Email</label>
-                                <input type="email" class="form-control" name="email" value="<%= mwalimu.email %>" required id="email" />
+                                <input type="email" class="form-control" name="email" value="<%= user.email %>" required id="email" />
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="password">Password</label>
                                 <div class="input-group">
-                                    <input type="password" class="form-control" name="password" value="<%= mwalimu.password %>" required id="password" />
+                                    <input type="password" class="form-control" name="password" value="<%= user.password %>" required id="password" />
                                     <button type="button" class="btn btn-outline-secondary" id="showPasswordToggle">
                                         <i class="bi bi-eye" id="eyeIconPassword"></i>
                                     </button>
@@ -41,7 +41,7 @@
                             <div class="col-md-6 form-group">
                                 <label for="confirmpassword">Confirm Password</label>
                                 <div class="input-group">
-                                    <input type="password" class="form-control" name="confirmpassword" value="<%= mwalimu.confirmpassword %>" required id="confirmpassword" />
+                                    <input type="password" class="form-control" name="confirmpassword" value="<%= user.confirmpassword %>" required id="confirmpassword" />
                                     <button type="button" class="btn btn-outline-secondary" id="showConfirmPasswordToggle">
                                         <i class="bi bi-eye" id="eyeIconConfirmPassword"></i>
                                     </button>
