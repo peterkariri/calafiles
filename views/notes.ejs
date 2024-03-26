@@ -1,0 +1,47 @@
+<!-- ======= Header Section ======= -->
+<%- include('partials/header') %> 
+<!-- End Header -->
+
+    <!-- ======= Navbar Section ======= -->
+        <%- include('partials/nav') %>
+    <!-- End Navbar -->
+
+    <section id="hero" class="d-flex align-items-center">
+        <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+            <div class="row justify-content-center">
+                <div class="col-xl-7 col-lg-9 text-center">
+                    <h1 style="font-size: 30px;">CALAFILES Notes Repository</h1>
+                    <p>Explore the collection of notes on CALAFILES designed to enrich your academic journey.</p>
+                    <p><%= pdf.length %> notes uploaded</p>
+                </div>
+            </div>
+            <div class="row icon-boxes">
+                <% pdf.forEach(file => { %>
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="<%= pdf.indexOf(file)+1 %>00">
+                        <div class="icon-box">
+                            <h4 class="title"><a href="/notes-pdf/<%= file.filename %>"><%= file.title %></a></h4>
+                            <p class="description"><%= file.def %></p>
+                            <div style="display: flex; justify-content: space-between;">
+                                <a href="/pdf/<%= file.filename %>" download="<%= file.title %>" class="download-link" style="font-size: 15px;">Download <i class="bi bi-download"></i></a>
+                                <a href="/notes-pdf/<%= file.filename %>" style="font-size: 15px;">Preview <i class="bi bi-arrows-angle-expand"></i></a>
+                            </div>
+                            <embed src="/pdf/<%= file.filename %>" type="application/pdf" class="pdf-preview"/>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+    
+        <!-- ======= Main Section ======= -->
+        <main id="main">
+            <!-- ======= Contact Section ======= -->
+                <%- include('partials/contact') %>
+            <!-- End Contact Section -->
+        </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+        <%- include('partials/footer') %>
+    <!-- End Footer -->
+<%- include('partials/ending') %>
