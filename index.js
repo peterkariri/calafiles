@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const multer = require('multer')
 const dotenv = require('dotenv')
 const nodemailer = require('nodemailer')
+const path = require('path')
 
 const app = express()
 
@@ -26,21 +27,32 @@ const connection = mysql.createConnection({
     database: 'calafiles'
 })
 
-const storage = multer.diskStorage({
+const profileStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/profile')
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, file.fieldname + '-' + uniqueSuffix)
+        cb(null, 'profile-' + uniqueSuffix + path.extname(file.originalname))
     }
 })
 
-const upload = multer({ storage: storage })
+const pdfStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/pdf')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, 'pdf-' + uniqueSuffix + path.extname(file.originalname))
+    }
+})
+
+const uploadProfile = multer({ storage: profileStorage })
+const uploadPDF = multer({ storage: pdfStorage })
+
 
 app.use((req, res, next) => {
-    res.locals.username = req.session.username
-    res.locals.isLogedIn = (req.session.userID !== undefined)
+    res.locals.username = req.session.username !== undefined ? req.session.username : 'Guest', res.locals.isLogedIn = req.session.userID !== undefined
     next()
 })
 
@@ -257,6 +269,51 @@ app.post('/login', (req, res) => {
 app.get('/dashboard', (req, res) => {
     loginRequired(req, res)
     res.render('dashboard')
+})
+
+app.get('/notes', (req, res) => {
+    // loginRequired(req, res)
+    let sql = 'SELECT * FROM pdf WHERE isactive = ?'
+    connection.query(
+        sql,
+        ['active'],
+        (error, results) => {
+            res.render('notes', {pdf: results})
+        }
+    )
+})
+
+app.get('/notes-pdf', (req, res) => {
+    // loginRequired(req, res)
+    // let filename = req.params.filename
+    let sql = 'SELECT * FROM pdf WHERE filename = ?'
+    connection.query(
+        sql,
+        ['pdf-1711460002419-58198995.pdf'],
+        (error, results) => {
+            res.render('notes-pdf', {file: results[0]})
+        }
+    )
+})
+
+app.get('/add-pdf', (req, res) => {
+    res.render('add-pdf', {error: false})
+})
+
+app.post('/upload-pdf', uploadPDF.single('pdf'), (req, res) => {
+    const pdf = {
+        title: req.body.title,
+        def: req.body.definition,
+        filename: req.file.filename
+    }
+    let sql = 'INSERT INTO pdf (title, filename, def) VALUES (?, ?, ?)'
+    connection.query(
+        sql,
+        [pdf.title, pdf.filename, pdf.def],
+        (error, results) => {
+            res.redirect('/notes')
+        }
+    )
 })
 
 app.get('/logout', (req, res) => {
