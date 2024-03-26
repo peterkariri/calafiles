@@ -1,0 +1,46 @@
+<!-- ======= Header Section ======= -->
+<%- include('partials/header') %> 
+<!-- End Header -->
+
+    <!-- ======= Navbar Section ======= -->
+        <%- include('partials/nav') %>
+    <!-- End Navbar -->
+
+    <!-- ======= Main Section ======= -->
+        <main id="main">
+            <section id="contact" class="contact">
+                <div class="container" data-aos="fade-up">
+                    <div class="section-title">
+                        <h2>Upload PDF</h2>
+                        <p>Fill in the details and choose a PDF file to upload</p>
+                    </div>
+                    <form action="/upload-pdf" method="post" enctype="multipart/form-data" class="php-email-form">
+                        <% if(error){ %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= message %>
+                            </div>
+                        <% } %>
+                        <div class="row gy-2 gx-md-3">
+                            <div class="col-md-6 form-group">
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control" name="title" id="title" placeholder="Enter title" required />
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="definition">Definition</label>
+                                <input type="text" class="form-control" name="definition" id="definition" placeholder="Enter definition" required />
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="pdf">Select PDF</label>
+                                <input type="file" class="form-control" name="pdf" id="pdf" accept=".pdf" required />
+                            </div>
+                            <div class="text-center col-12">
+                                <button type="submit">Upload PDF</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+            </section>            
+        </main>
+    <!-- End #main -->
+<%- include('partials/ending') %>
