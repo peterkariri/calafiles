@@ -4,54 +4,12 @@
         <nav id="navbar" class="navbar">
             <ul>
                 <% if(locals.isLogedIn) { %>
-                    <li><a class="nav-link scrollto active" href="/dashboard">Dashboard</a></li>
-                    <li class="dropdown">
-                        <a href="#"><span>Class</span> <i class="bi bi-chevron-down"></i></a>
-                        <ul>
-                            <li class="dropdown">
-                            <a href="#"><span>Form 1</span> <i class="bi bi-chevron-right"></i></a>
-                                <ul>
-                                    <li><a href="#">Form 1A</a></li>
-                                    <li><a href="#">Form 1B</a></li>
-                                    <li><a href="#">Form 1C</a></li>
-                                    <li><a href="#">Form 1D</a></li>
-                                    <li><a href="#">Form 1E</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                            <a href="#"><span>Form 2</span> <i class="bi bi-chevron-right"></i></a>
-                                <ul>
-                                    <li><a href="#">Form 2A</a></li>
-                                    <li><a href="#">Form 2B</a></li>
-                                    <li><a href="#">Form 2C</a></li>
-                                    <li><a href="#">Form 2D</a></li>
-                                    <li><a href="#">Form 2E</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                            <a href="#"><span>Form 3</span> <i class="bi bi-chevron-right"></i></a>
-                                <ul>
-                                    <li><a href="#">Form 3A</a></li>
-                                    <li><a href="#">Form 3B</a></li>
-                                    <li><a href="#">Form 3C</a></li>
-                                    <li><a href="#">Form 3D</a></li>
-                                    <li><a href="#">Form 3E</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                            <a href="#"><span>Form 4</span> <i class="bi bi-chevron-right"></i></a>
-                                <ul>
-                                    <li><a href="#">Form 4A</a></li>
-                                    <li><a href="#">Form 4B</a></li>
-                                    <li><a href="#">Form 4C</a></li>
-                                    <li><a href="#">Form 4D</a></li>
-                                    <li><a href="#">Form 4E</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><a class="nav-link" href="">Logout</a></li>
-                    <li><a class="nav-link scrollto" href="/upload">Upload Results</a></li>
+                    <li><a class="nav-link scrollto active" href="/dashboard">Home</a></li>
+                    <li><a class="nav-link scrollto" href="/notes">Notes</a></li>
+                    <li><a class="nav-link scrollto" href="/progress">My Progress</a></li>
+                    <li><a class="nav-link scrollto" href="/chatroom">Chatroom</a></li>
+                    <li><a class="nav-link scrollto" href="/edit-profile">Edit Profile</a></li>
+                    <li><a class="nav-link scrollto" href="/logout">Logout</a></li>
                 <% } else { %>
                     <li><a class="nav-link scrollto active" href="/">Home</a></li>
                     <li><a class="nav-link scrollto" href="/login">Login</a></li>
