@@ -11,7 +11,7 @@ const app = express()
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(session({
     secret: 'c@!@$0m@',
@@ -283,15 +283,15 @@ app.get('/notes', (req, res) => {
     )
 })
 
-app.get('/notes-pdf', (req, res) => {
+app.get('/preview/:filename', (req, res) => {
     // loginRequired(req, res)
-    // let filename = req.params.filename
+    let filename = req.params.filename
     let sql = 'SELECT * FROM pdf WHERE filename = ?'
     connection.query(
         sql,
-        ['pdf-1711460002419-58198995.pdf'],
+        [filename],
         (error, results) => {
-            res.render('notes-pdf', {file: results[0]})
+            res.render('preview', {file: results[0]})
         }
     )
 })
@@ -323,9 +323,9 @@ app.get('/logout', (req, res) => {
     })
 })
 
-app.get('*', (req, res) => {
-    res.render('404')
-})
+// app.get('*', (req, res) => {
+    // res.render('404')
+// })
 
 const PORT = process.env.PORT || 311
 app.listen(PORT, () => {
