@@ -1,5 +1,5 @@
 <!-- ======= Header Section ======= -->
-<%- include('partials/header') %> 
+    <%- include('partials/header') %> 
 <!-- End Header -->
 
     <!-- ======= Navbar Section ======= -->
@@ -11,9 +11,34 @@
             <section id="contact" class="contact">
                 <div class="container" data-aos="fade-up">
                     <div class="section-title">
-
+                        <h2>Chat Room</h2>
+                        <p>Chat with other users</p>
                     </div>
-                    
+                    <div class="d-flex justify-content-end mb-4">
+                        <div class="msg_cotainer_send">
+                            Hello, how are you?
+                            <span class="msg_time_send">8:55 AM, Today</span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start mb-4">
+                        <div class="msg_cotainer">
+                            I'm good, thank you!
+                            <span class="msg_time">8:56 AM, Today</span>
+                        </div>
+                    </div>
+                    <form action="/send-message" method="post" role="form" class="php-email-form">
+                        <% if(error){ %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= message %>
+                            </div>
+                        <% } %>
+                        <div class="row gy-2 gx-md-3">
+                            <div class="form-group col-12" style="position: fixed; bottom: 0; left: 0; width: 60%; min-width: 350px;">
+                                <input type="text" class="form-control" name="subject" id="subject" required style="margin-bottom: 5px; font-size: 20px;" />
+                                <button type="submit" style="width: fit-content;">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </section>            
         </main>
