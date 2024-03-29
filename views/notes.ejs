@@ -19,11 +19,11 @@
                 <% pdf.forEach(file => { %>
                     <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="<%= pdf.indexOf(file)+1 %>00">
                         <div class="icon-box">
-                            <h4 class="title"><a href="/notes-pdf/<%= file.filename %>"><%= file.title %></a></h4>
+                            <h4 class="title"><a href="/preview/<%= file.filename %>"><%= file.title %></a></h4>
                             <p class="description"><%= file.def %></p>
                             <div style="display: flex; justify-content: space-between;">
                                 <a href="/pdf/<%= file.filename %>" download="<%= file.title %>" class="download-link" style="font-size: 15px;">Download <i class="bi bi-download"></i></a>
-                                <a href="/notes-pdf/<%= file.filename %>" style="font-size: 15px;">Preview <i class="bi bi-arrows-angle-expand"></i></a>
+                                <a href="/preview/<%= file.filename %>" style="font-size: 15px;">Preview <i class="bi bi-arrows-angle-expand"></i></a>
                             </div>
                             <embed src="/pdf/<%= file.filename %>" type="application/pdf" class="pdf-preview"/>
                         </div>
