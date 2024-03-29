@@ -296,6 +296,11 @@ app.get('/preview/:filename', (req, res) => {
     )
 })
 
+app.get('/chatroom', (req, res) => {
+    // loginRequired(req, res)
+    res.render('chatroom', {error: false})
+})
+
 app.get('/add-pdf', (req, res) => {
     res.render('add-pdf', {error: false})
 })
