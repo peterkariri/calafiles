@@ -8,36 +8,36 @@
 
 <!-- ======= Main Section ======= -->
 <main id="main">
-    <section class="progress">
+    <section id="contact" class="contact">
         <div class="container">
             <div class="section-title">
-                <h2>Progress</h2>
-                <p>Here is your progress so far:</p>
+                <h2>MY PROGRESS</h2>
             </div>
-            <div class="profile-container">
-                <img src="/profile/user.png" alt="Profile Picture" class="profile-picture">
-                <p><strong>Name:</strong> <%= profile.name %></p>
-                <p><strong>Admission Number:</strong> ES<%= profile.s_id %>-<%= profile.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %></p>
-                <div class="progress-container">
-                    <div class="progress-label">Progress: <%= profile.learn %>%</div>
-                    <progress class="progress-bar" value="<%= profile.learn %>" max="100"><%= profile.learn %></progress>
-                </div>
-                <a href="/editMyProfile" class="btn41-43 btn-41">Edit Profile</a>
-                <div class="admin-remark">
-                    <p>
-                        <strong>Admin Remark:</strong>
-                        <% if(profile.learn >= 80) { %> 
-                            Well done!&#x1F60A;
-                        <% } else if(profile.learn >= 65) { %>
-                            Keep it up!&#x1F603;
-                        <% } else if(profile.learn >= 50) { %>
-                            Average. Work harder!&#x1F616;
-                        <% } else if(profile.learn >= 20) { %>
-                            Below Average. Be more serious!&#x1F612;
-                        <% } else { %>
-                            Poor. Go and learn, dummy!&#128544;
-                        <% } %>
-                    </p>
+            <div style="margin-bottom: 50px;"  data-aos="fade-down">
+                <div class="profile-container">
+                    <img src="/profile/<%= user.profilepicture %>" alt="Profile Picture" class="profile-picture">
+                    <p><strong>Name:</strong> <%= user.name %></p>
+                    <p><strong>Admission Number:</strong> <%= user.id %>/<%= user.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %></p>
+                    <div class="progress-container">
+                        <div class="progress-label">Progress: <%= user.progress %>%</div>
+                        <progress class="progress-bar" value="<%= user.progress %>" max="100"><%= user.progress %></progress>
+                    </div>
+                    <div class="admin-remark">
+                        <p>
+                            <strong>Admin Remark:</strong>
+                            <% if(user.progress >= 80) { %> 
+                                Well done!&#x1F60A;
+                            <% } else if(user.progress >= 65) { %>
+                                Keep it up!&#x1F603;
+                            <% } else if(user.progress >= 50) { %>
+                                Average. Work harder!&#x1F616;
+                            <% } else if(user.progress >= 20) { %>
+                                Below Average. Be more serious!&#x1F612;
+                            <% } else { %>
+                                Poor. Go and learn, dummy!&#128544;
+                            <% } %>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
