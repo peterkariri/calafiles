@@ -1,46 +1,95 @@
 <!-- ======= Header Section ======= -->
-    <%- include('partials/header') %> 
+<%- include('partials/header') %> 
 <!-- End Header -->
 
-    <!-- ======= Navbar Section ======= -->
-        <%- include('partials/nav') %>
-    <!-- End Navbar -->
+<!-- ======= Navbar Section ======= -->
+<%- include('partials/nav') %>
+<!-- End Navbar -->
 
-    <!-- ======= Main Section ======= -->
-        <main id="main">
-            <section id="contact" class="contact">
-                <div class="container" data-aos="fade-up">
-                    <div class="section-title">
-                        <h2>Chat Room</h2>
-                        <p>Chat with other users</p>
-                    </div>
-                    <div class="d-flex justify-content-end mb-4">
-                        <div class="msg_cotainer_send">
-                            Hello, how are you?
-                            <span class="msg_time_send">8:55 AM, Today</span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-start mb-4">
-                        <div class="msg_cotainer">
-                            I'm good, thank you!
-                            <span class="msg_time">8:56 AM, Today</span>
-                        </div>
-                    </div>
-                    <form action="/send-message" method="post" role="form" class="php-email-form">
-                        <% if(error){ %>
-                            <div class="alert alert-danger" role="alert">
-                                <%= message %>
+<!-- ======= Main Section ======= -->
+<main id="main">
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Chat Room</h2>
+                <p>The color code key below shows who sent the message:</p>
+                <div class="color-code-key">
+                    <div class="box yellow-bg">Tutor</div>
+                    <div class="box blue-bg">Received</div>
+                    <div class="box green-bg">Sent</div>
+                </div>
+
+            </div>
+            <div style="margin-bottom: 50px;"  data-aos="fade-down">
+                <% if (messages && messages.length > 0) { %>
+                    <% messages.forEach(message => { %>
+                        <% 
+                            var timestamp = new Date(message.timestamp);
+                            var today = new Date();
+                            var yesterday = new Date(today);
+                            yesterday.setDate(today.getDate() - 1);
+                            var dateStr;
+                            if (timestamp.toDateString() === today.toDateString()) {
+                                dateStr = "Today";
+                            } else if (timestamp.toDateString() === yesterday.toDateString()) {
+                                dateStr = "Yesterday";
+                            } else {
+                                dateStr = timestamp.toLocaleDateString();
+                            }
+                            var hours = timestamp.getHours();
+                            var minutes = timestamp.getMinutes();
+                            var ampm = hours >= 12 ? 'PM' : 'AM';
+                            hours = hours % 12;
+                            hours = hours ? hours : 12;
+                            minutes = minutes < 10 ? '0' + minutes : minutes;
+                            var timeStr = hours + ':' + minutes + ' ' + ampm;
+                        %>
+                        <% if(locals.userID === message.user_id){ %>
+                            <div class="d-flex justify-content-end mb-4">
+                                <% if(message.tutor){ %>
+                                    <div class="msg_cotainer_send" style="width: 250px; background-color: yellow;">
+                                        <%= message.message %>
+                                        <span class="msg_time"><span><%= message.name.split(' ')[0] %></span> <span><%= timeStr + ', ' + dateStr %></span></span>
+                                    </div>
+                                <% } else { %>
+                                    <div class="msg_cotainer_send" style="width: 250px;">
+                                        <%= message.message %>
+                                        <span class="msg_time"><span><%= message.name.split(' ')[0] %></span> <span><%= timeStr + ', ' + dateStr %></span></span>
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% } else { %>
+                            <div class="d-flex justify-content-start mb-4">
+                                <% if(message.tutor){ %>
+                                    <div class="msg_cotainer" style="width: 250px; background-color: yellow;">
+                                        <%= message.message %>
+                                        <span class="msg_time"><span><%= message.name.split(' ')[0] %></span> <span><%= timeStr + ', ' + dateStr %></span></span>
+                                    </div>
+                                <% } else { %>
+                                    <div class="msg_cotainer" style="width: 250px;">
+                                        <%= message.message %>
+                                        <span class="msg_time"><span><%= message.name.split(' ')[0] %></span> <span><%= timeStr + ', ' + dateStr %></span></span>
+                                    </div>
+                                <% } %>
                             </div>
                         <% } %>
-                        <div class="row gy-2 gx-md-3">
-                            <div class="form-group col-12" style="position: fixed; bottom: 0; left: 0; width: 60%; min-width: 350px;">
-                                <input type="text" class="form-control" name="subject" id="subject" required style="margin-bottom: 5px; font-size: 20px;" />
-                                <button type="submit" style="width: fit-content;">Send Message</button>
-                            </div>
-                        </div>
-                    </form>
+                    <% }) %>
+                <% } else { %>
+                    <p>No messages available</p>
+                <% } %>
+            </div>
+            <form  class="input-group-chatroom" action="/send-message" method="post">
+                <% if(error){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= message %>
+                    </div>
+                <% } %>
+                <div class="div-message">
+                    <input type="text" required name="message" class="form-control-chatroom"><input type="submit" class="btn-primary-chatroom" value="Send Message">
                 </div>
-            </section>            
-        </main>
-    <!-- End #main -->
+            </form>
+        </div>
+    </section>
+</main>
+<!-- End #main -->
 <%- include('partials/ending') %>

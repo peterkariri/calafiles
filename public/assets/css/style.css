@@ -560,8 +560,14 @@ section {
     position: absolute;
     left: 20px;
     bottom: -15px;
+    width: 100%;
+    max-width: 200px;
     color: #000000;
     font-size: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
 }
 
 .msg_time_send {
@@ -570,6 +576,89 @@ section {
     bottom: -15px;
     color: #000000;
     font-size: 10px;
+}
+
+.input-group-chatroom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    width: 90%;
+    min-width: 350px;
+    flex-wrap: wrap;
+    left: 5%;
+    right: 5%;
+    background-color: #ffffff;
+}
+
+.input-group-chatroom .div-message {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+    bottom: 20px
+}
+
+.input-group-chatroom .form-control-chatroom {
+    min-width: 250px;
+    width: 70%;
+    border: 2px solid rgba(0, 43, 0, 0.5);
+    border-radius: 10px 0 0 10px;
+    border-right: none;
+    font-size: 20px;
+}
+
+.input-group-chatroom .btn-primary-chatroom {
+    width: fit-content;
+    background-color: #004900;
+    color: #ffffff;
+    border: 2px solid #004900;
+    border-radius: 0 10px 10px 0;
+    border-left: none;
+    font-size: 20px;
+}
+@media screen and (max-width: 768px) {
+    .input-group-chatroom .div-message {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        position: relative;
+        bottom: 0;
+    }
+    .input-group-chatroom .btn-primary-chatroom, .input-group-chatroom .form-control-chatroom {
+        margin: 0 auto;
+        border-radius: 10px;
+        border: solid 2px #004900;
+    }
+}
+.color-code-key {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+.color-code-key .box {
+    width: 100px;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+.color-code-key .yellow-bg {
+    background-color: yellow;
+}
+.color-code-key .green-bg {
+    background-color: #78e08f;
+}
+.color-code-key .blue-bg {
+    background-color: #82ccdd;
 }
 
 .pdf-preview {
