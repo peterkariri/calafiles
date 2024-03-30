@@ -326,8 +326,15 @@ app.post('/send-message', (req, res) => {
 })
 
 app.get('/progress', (req, res) => {
-    // loginRequired(req, res)
-    res.render('progress')
+    loginRequired(req, res)
+    let sql = 'SELECT * FROM user WHERE id = ?'
+    connection.query(
+        sql,
+        [req.session.userID],
+        (error, results) => {
+            res.render('progress', {user: results[0]})
+        }
+    )
 })
 
 app.get('/add-pdf', (req, res) => {
