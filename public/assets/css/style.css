@@ -666,6 +666,56 @@ section {
     height: 300px;
     border: 1px solid #ccc;
 }
+
+.profile-container {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-picture {
+    max-width: 100px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.progress-container {
+    width: 100%;
+}
+
+.progress-container-manager {
+    position: relative;
+    width: 100%;
+
+}
+
+.progress-bar {
+    display: block;
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+.progress-label {
+    display: inline-block;
+    width: fit-content;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.admin-remark {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
