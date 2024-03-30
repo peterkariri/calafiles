@@ -52,7 +52,7 @@ const uploadPDF = multer({ storage: pdfStorage })
 
 
 app.use((req, res, next) => {
-    res.locals.username = req.session.username !== undefined ? req.session.username : 'Guest', res.locals.isLogedIn = req.session.userID !== undefined
+    res.locals.username = req.session.username !== undefined ? req.session.username : 'Guest', res.locals.isLogedIn = req.session.userID !== undefined, res.locals.userID = req.session.userID
     next()
 })
 
@@ -272,7 +272,7 @@ app.get('/dashboard', (req, res) => {
 })
 
 app.get('/notes', (req, res) => {
-    // loginRequired(req, res)
+    loginRequired(req, res)
     let sql = 'SELECT * FROM pdf WHERE isactive = ?'
     connection.query(
         sql,
@@ -284,7 +284,7 @@ app.get('/notes', (req, res) => {
 })
 
 app.get('/preview/:filename', (req, res) => {
-    // loginRequired(req, res)
+    loginRequired(req, res)
     let filename = req.params.filename
     let sql = 'SELECT * FROM pdf WHERE filename = ?'
     connection.query(
@@ -297,15 +297,46 @@ app.get('/preview/:filename', (req, res) => {
 })
 
 app.get('/chatroom', (req, res) => {
+    loginRequired(req, res)
+    let sql = 'SELECT chatroom.message, chatroom.timestamp, chatroom.user_id, user.name, user.tutor FROM chatroom JOIN user ON chatroom.user_id = user.id ORDER BY chatroom.timestamp DESC'
+    connection.query(
+        sql,
+        (error, results) => {
+            res.render('chatroom', {messages: results, error: false})
+        }
+    )
+})
+
+app.post('/send-message', (req, res) => {
+    loginRequired(req, res)
+    const message = {
+        user: req.session.userID,
+        content: req.body.message
+    }
+    let sql = 'INSERT INTO chatroom (user_id, message) VALUES (?, ?)'
+    connection.query(
+        sql,
+        [message.user, message.content],
+        (error, results) => {
+            res.redirect('/chatroom')
+            console.log(req.session.userID)
+            console.log(results)
+        }
+    )
+})
+
+app.get('/progress', (req, res) => {
     // loginRequired(req, res)
-    res.render('chatroom', {error: false})
+    res.render('progress')
 })
 
 app.get('/add-pdf', (req, res) => {
+    loginRequired(req, res)
     res.render('add-pdf', {error: false})
 })
 
 app.post('/upload-pdf', uploadPDF.single('pdf'), (req, res) => {
+    loginRequired(req, res)
     const pdf = {
         title: req.body.title,
         def: req.body.definition,
@@ -328,9 +359,9 @@ app.get('/logout', (req, res) => {
     })
 })
 
-// app.get('*', (req, res) => {
-    // res.render('404')
-// })
+app.get('*', (req, res) => {
+    res.render('404')
+})
 
 const PORT = process.env.PORT || 311
 app.listen(PORT, () => {
