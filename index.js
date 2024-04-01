@@ -50,14 +50,16 @@ const pdfStorage = multer.diskStorage({
 const uploadProfile = multer({ storage: profileStorage })
 const uploadPDF = multer({ storage: pdfStorage })
 
-
 app.use((req, res, next) => {
-    res.locals.username = req.session.username !== undefined ? req.session.username : 'Guest', res.locals.isLogedIn = req.session.userID !== undefined, res.locals.userID = req.session.userID
-    next()
-})
+    res.locals.username = req.session.username !== undefined ? req.session.username : 'Guest';
+    res.locals.isLoggedIn = req.session.userID !== undefined;
+    res.locals.userID = req.session.userID;
+    next();
+});
+
 
 function loginRequired(req, res) {
-    res.locals.isLogedIn || res.redirect('/login')
+    res.locals.isLoggedIn || res.redirect('/login')
 }
 
 const offensiveWords = ['FUCK', 'SHIT', 'ASSHOLE', 'BITCH', 'DICK', 'CUNT', 'COCK', 'PUSSY', 'SLUT', 'WHORE', 'FAGGOT', 'MOTHERFUCKER', 'NIGGER', 'RETARD', 'TWAT', 'WANKER', 'ASSWIPE', 'BASTARD', 'DAMN', 'GODDAMN', 'ARSE', 'BOLLOCKS', 'BULLSHIT', 'CRAP', 'JACKASS', 'JERK', 'PISS',  'PRICK', 'SCREW', 'SUCK', 'TITS', 'ASSCLOWN', 'DUMBASS', 'FUCKER', 'SHITHEAD', 'ASSFACE', 'ASSHAT', 'CUM', 'DICKHEAD', 'ASSBAG', 'DIPSHIT', 'FUCKFACE', 'MOTHERFUCKING', 'NIGGA',  'SHITHOLE', 'ASSNUGGET', 'BASTARD', 'BLOWJOB', 'COCKSUCKER', 'CUMSLUT', 'DICKBAG', 'DICKWEED', 'DOUCHEBAG', 'FUCKTARD', 'JACKOFF', 'JIZZ', 'MOTHERFUCK', 'NIGGERS', 'PRICKFACE', 'SEX', 'SHITBAG', 'SHITSTAIN', 'TITFUCK', 'WANKSTAIN']

@@ -23,7 +23,7 @@
                             <p class="description"><%= file.def %></p>
                             <div style="display: flex; justify-content: space-between;">
                                 <a href="/pdf/<%= file.filename %>" download="<%= file.title %>" class="download-link" style="font-size: 15px;">Download <i class="bi bi-download"></i></a>
-                                <a href="/preview/<%= file.filename %>" style="font-size: 15px;">Preview <i class="bi bi-arrows-angle-expand"></i></a>
+                                <form action="/completed" method="post"></form>
                             </div>
                             <embed src="/pdf/<%= file.filename %>" type="application/pdf" class="pdf-preview"/>
                         </div>
