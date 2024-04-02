@@ -12,7 +12,7 @@
                 <div class="col-xl-7 col-lg-9 text-center">
                     <h1 style="font-size: 30px;">CALAFILES Notes Repository</h1>
                     <p>Explore the collection of notes on CALAFILES designed to enrich your academic journey.</p>
-                    <p><%= pdf.length %> notes uploaded</p>
+                    <p><%= pdf.length %> notes uploaded. Click the done button on the note after you have completed it.</p>
                 </div>
             </div>
             <div class="row icon-boxes">
@@ -22,8 +22,21 @@
                             <h4 class="title"><a href="/preview/<%= file.filename %>"><%= file.title %></a></h4>
                             <p class="description"><%= file.def %></p>
                             <div style="display: flex; justify-content: space-between;">
-                                <a href="/pdf/<%= file.filename %>" download="<%= file.title %>" class="download-link" style="font-size: 15px;">Download <i class="bi bi-download"></i></a>
-                                <form action="/completed" method="post"></form>
+                                <% if(file.user_id === locals.userID){ %>
+                                    <a href="/pdf/<%= file.filename %>" download="<%= file.title %>" style="background-color: #82ccdd; color: black; font-weight: bold;" class="download-link done-btn" style="font-size: 15px;"><i class="bi bi-download"></i> Re-download</a>
+                                    <form action="/undo" method="post">
+                                        <input type="hidden" name="file_id" value="<%= file.id %>">
+                                        <input type="hidden" name="user_id" value="<%= locals.userID %>">
+                                        <button class="done-btn" style="background-color: #82ccdd; color: black; font-weight: bold;" type="submit"><i class="bi bi-check-all"></i> Undo</button>
+                                    </form>
+                                <% } else { %>
+                                    <a href="/pdf/<%= file.filename %>" download="<%= file.title %>" class="download-link done-btn" style="font-size: 15px;"><i class="bi bi-download"></i> Download</a>
+                                    <form action="/done" method="post">
+                                        <input type="hidden" name="file_id" value="<%= file.id %>">
+                                        <input type="hidden" name="user_id" value="<%= locals.userID %>">
+                                        <button class="done-btn" type="submit"><i class="bi bi-check-all"></i> Done</button>
+                                    </form>
+                                <% } %>
                             </div>
                             <embed src="/pdf/<%= file.filename %>" type="application/pdf" class="pdf-preview"/>
                         </div>
