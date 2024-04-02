@@ -2,13 +2,13 @@
     <div class="container d-flex align-items-center justify-content-between">
         <a href="/" class="logo"><img src="assets/img/CALASOMA.png" alt="" class="img-fluid"/></a>
         <nav id="navbar" class="navbar">
-            <ul>
+            <ul style="text-transform: uppercase;">
                 <% if(locals.isLoggedIn) { %>
                     <li><a class="nav-link scrollto active" href="/dashboard">Home</a></li>
                     <li><a class="nav-link scrollto" href="/notes">Notes</a></li>
                     <li><a class="nav-link scrollto" href="/progress">My Progress</a></li>
                     <li><a class="nav-link scrollto" href="/chatroom">Chatroom</a></li>
-                    <li><a class="nav-link scrollto" href="/edit-profile">Edit Profile</a></li>
+                    <li><a class="nav-link scrollto" href="/edit-user">Edit Profile</a></li>
                     <li><a class="nav-link scrollto" href="/logout">Logout</a></li>
                 <% } else { %>
                     <li><a class="nav-link scrollto active" href="/">Home</a></li>
