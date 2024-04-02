@@ -12,7 +12,8 @@
                 <div class="container" data-aos="fade-up">
                     <div class="section-title">
                         <h2>MANAGER</h2>
-                        <p>Manage user information, activate or deactivate users, give admin capabilities to users</p>
+                        <p>Manage user information, activate or deactivate other users, grant admin capabilities to users.</p>
+                        <p>You cannot activate or deactivate yourself.</p>
                     </div>
                     <div>
                         <h1>Total users: <%= users.length %></h1>
@@ -33,33 +34,55 @@
                             <% } %>
                         </form>
                         <% users.forEach(user => { %>
-                            <div class="resourcesMain">
-                                <div class="resourceid resource<%= user.isactive %>">
-                                    <p><%= users.indexOf(user)+1 %>. <%= user.id %>-<%= user.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %>: <%= user.name %>: <%= user.isactive %></p>
-                                    <div class="activate">
-                                        <form action="/activateuser/<%= user.id %>" method="post">
-                                            <input class="activateuser" type="submit" value="activate">
-                                        </form>
-                                        <form action="/deactivateuser/<%= user.id %>" method="post">
-                                            <input class="deactivateuser" type="submit" value="Deactivate">
-                                        </form>
+                            <% if(user.id === locals.userID){ %>
+                                <div class="resourcesMain">
+                                    <div class="resourceid resource<%= user.isactive %>">
+                                        <p><%= users.indexOf(user)+1 %>. <%= user.id %>-<%= user.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %>: <%= user.name %>: <%= user.isactive %></p>
+                                    </div>
+                                    <div class="resources">
+                                        <div class="resourceInfo progress-container-manager">
+                                            <div class="progress-container">
+                                                <div class="progress-label">Progress: <%= user.progress %>%</div>
+                                                <progress class="progress-bar" value="<%= user.progress %>" max="100"><%= user.progress %></progress>
+                                            </div>
+                                        </div>
+                                        <div class="resourceInfo">
+                                            <p><b>Email: </b> <%= user.email %></p>
+                                        </div>
+                                        <div class="resourceInfo">
+                                            <p><b>Joined on:</b> <%= (new Date(user.timestamp)).toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric", hour12: true }) + ' ' + (new Date(user.timestamp)).toLocaleDateString("en-US", { month: "numeric", day: "numeric", year: "numeric" }) %></p>
+                                        </div>                          
                                     </div>
                                 </div>
-                                <div class="resources">
-                                    <div class="resourceInfo progress-container-manager">
-                                        <div class="progress-container">
-                                            <div class="progress-label">Progress: <%= user.progress %>%</div>
-                                            <progress class="progress-bar" value="<%= user.progress %>" max="100"><%= user.progress %></progress>
+                            <% } else { %>
+                                <div class="resourcesMain">
+                                    <div class="resourceid resource<%= user.isactive %>">
+                                        <p><%= users.indexOf(user)+1 %>. <%= user.id %>-<%= user.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %>: <%= user.name %>: <%= user.isactive %></p>
+                                        <div class="activate">
+                                            <form action="/activateuser/<%= user.id %>" method="post">
+                                                <input class="activateuser" type="submit" value="activate">
+                                            </form>
+                                            <form action="/deactivateuser/<%= user.id %>" method="post">
+                                                <input class="deactivateuser" type="submit" value="Deactivate">
+                                            </form>
                                         </div>
                                     </div>
-                                    <div class="resourceInfo">
-                                        <p><b>Email: </b> <%= user.email %></p>
+                                    <div class="resources">
+                                        <div class="resourceInfo progress-container-manager">
+                                            <div class="progress-container">
+                                                <div class="progress-label">Progress: <%= user.progress %>%</div>
+                                                <progress class="progress-bar" value="<%= user.progress %>" max="100"><%= user.progress %></progress>
+                                            </div>
+                                        </div>
+                                        <div class="resourceInfo">
+                                            <p><b>Email: </b> <%= user.email %></p>
+                                        </div>
+                                        <div class="resourceInfo">
+                                            <p><b>Joined on:</b> <%= (new Date(user.timestamp)).toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric", hour12: true }) + ' ' + (new Date(user.timestamp)).toLocaleDateString("en-US", { month: "numeric", day: "numeric", year: "numeric" }) %></p>
+                                        </div>                          
                                     </div>
-                                    <div class="resourceInfo">
-                                        <p><b>Joined on:</b> <%= (new Date(user.timestamp)).toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric", hour12: true }) + ' ' + (new Date(user.timestamp)).toLocaleDateString("en-US", { month: "numeric", day: "numeric", year: "numeric" }) %></p>
-                                    </div>                          
                                 </div>
-                            </div>
+                            <% } %>
                         <% }) %>
                     </div>
                 </div>

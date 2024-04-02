@@ -317,7 +317,6 @@ app.post('/done', (req, res) => {
                                 sql,
                                 [progress, req.session.userID],
                                 (error, results) => {
-                                    console.log(progress)
                                     res.redirect('/notes')
                                 }
                             )
@@ -361,7 +360,6 @@ app.post('/undo', (req, res) => {
                                 sql,
                                 [progress, req.session.userID],
                                 (error, results) => {
-                                    console.log(progress)
                                     res.redirect('/notes')
                                 }
                             )
@@ -409,8 +407,6 @@ app.post('/send-message', (req, res) => {
         [message.user, message.content],
         (error, results) => {
             res.redirect('/chatroom')
-            console.log(req.session.userID)
-            console.log(results)
         }
     )
 })
@@ -498,13 +494,7 @@ app.post('/admin', (req, res) => {
                     sql,
                     [req.session.userID],
                     (error, results) => {
-                        let sql = 'SELECT * FROM user'
-                        connection.query(
-                            sql,
-                            (error, results) => {
-                                res.render('manager', {error: false, users: results})
-                            }
-                        )
+                        res.redirect('/manager')
                     }
                 )
             } else {
@@ -517,24 +507,33 @@ app.post('/admin', (req, res) => {
     })
 })
 
+app.get('/manager', (req, res) => {
+    let sql = 'SELECT * FROM user'
+    connection.query(
+        sql,
+        (error, results) => {
+            res.render('manager', {error: false, users: results})
+        }
+    )
+})
 
-// activate admin
+// activate 
 app.post('/activateuser/:id', (req, res) => {
-    let adminPin = req.params.id
+    let id = req.params.id
     let sessionLiveAdmin = req.session.userID
-    if (parseInt(adminPin, 10) === sessionLiveAdmin) {
+    if (id === sessionLiveAdmin) {
         connection.query(
             'SELECT * FROM user',
             [],
             (error, results) => {
                 let message = 'You cannot activate yourself'
-                res.render('manager', { error: true, message: message, results: results })
+                res.render('manager', { error: true, message: message, users: results })
             }
         )
     } else {
         connection.query (
             "UPDATE user SET isactive = 'active' WHERE id = ?",
-            [adminPin],
+            [id],
             (error, results) => {
                 if (error) {
                     console.error("Error activating admin:", error)
@@ -549,15 +548,15 @@ app.post('/activateuser/:id', (req, res) => {
 
 // deactivate user
 app.post('/deactivateuser/:id', (req, res) => {
-    let adminPin = req.params.id
+    let id = req.params.id
     let sessionLiveAdmin = req.session.userID
-    if (parseInt(adminPin, 10) === sessionLiveAdmin) {
+    if (id === sessionLiveAdmin) {
         connection.query(
             'SELECT * FROM user',
             [],
             (error, results) => {
                 let message = 'You cannot deactivate yourself'
-                res.render('manager', { error: true, message: message, results: results })
+                res.render('manager', { error: true, message: message, users: results })
             }
         )
     } else {
