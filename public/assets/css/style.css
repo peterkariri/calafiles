@@ -450,6 +450,23 @@ h6 {
     transition: 0.3s;
 }
 
+.done-btn {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    padding: 3px 4px;
+    border: 1px solid #004D00;
+    border-radius: 5px;
+    transition: 0.5s;
+    color: #fff;
+    background: #004d00;
+}
+
+.done-btn:hover {
+    background: #005000;
+    color: #ffffff;
+}
+
 #hero .icon-box .description {
     font-size: 15px;
     line-height: 28px;
