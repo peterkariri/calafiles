@@ -275,12 +275,99 @@ app.get('/dashboard', (req, res) => {
 
 app.get('/notes', (req, res) => {
     loginRequired(req, res)
-    let sql = 'SELECT * FROM pdf WHERE isactive = ?'
+    let sql = 'SELECT pdf.*, downloaded.user_id, downloaded.download_date FROM pdf LEFT JOIN downloaded ON pdf.id = downloaded.pdf_id AND downloaded.user_id = ? WHERE pdf.isactive = ? ORDER BY downloaded.user_id IS NULL DESC'
     connection.query(
         sql,
-        ['active'],
+        [
+            req.session.userID,
+            'active'
+        ],
+        (error, pdf) => {
+            res.render('notes', {pdf: pdf})
+        }
+    )
+})
+
+app.post('/done', (req, res) => {
+    loginRequired(req, res)
+    const item = {
+        pdf: req.body.file_id,
+        user: req.body.user_id
+    }
+    let sql = 'INSERT INTO downloaded (user_id, pdf_id) VALUES (?, ?)'
+    connection.query(
+        sql,
+        [item.user, item.pdf],
         (error, results) => {
-            res.render('notes', {pdf: results})
+            let sql = 'SELECT * FROM pdf'
+            connection.query(
+                sql,
+                (error, pdf) => {
+                    let totalpdf = pdf.length
+                    let sql = 'SELECT * FROM downloaded WHERE user_id = ?'
+                    connection.query(
+                        sql,
+                        [req.session.userID],
+                        (error, downloaded) => {
+                            let read = downloaded.length
+                            let progress = (read / totalpdf) * 100
+                            let sql = 'UPDATE user SET progress = ? WHERE id = ?'
+                            connection.query(
+                                sql,
+                                [progress, req.session.userID],
+                                (error, results) => {
+                                    console.log(progress)
+                                    res.redirect('/notes')
+                                }
+                            )
+                        }
+                    )
+                }
+            )
+        }
+    )
+})
+
+app.post('/undo', (req, res) => {
+    loginRequired(req, res)
+    const item = {
+        pdf: req.body.file_id,
+        user: req.body.user_id
+    }
+    let sql = 'DELETE FROM downloaded WHERE user_id = ? AND pdf_id = ?'
+    connection.query(
+        sql,
+        [
+            item.user, 
+            item.pdf
+        ],
+        (error, results) => {
+            let sql = 'SELECT * FROM pdf'
+            connection.query(
+                sql,
+                (error, pdf) => {
+                    let totalpdf = pdf.length
+                    let sql = 'SELECT * FROM downloaded WHERE user_id = ?'
+                    connection.query(
+                        sql,
+                        [req.session.userID],
+                        (error, downloaded) => {
+                            let read = downloaded.length
+                            let progres = (read / totalpdf) * 100
+                            let progress = progres.toFixed(2)
+                            let sql = 'UPDATE user SET progress = ? WHERE id = ?'
+                            connection.query(
+                                sql,
+                                [progress, req.session.userID],
+                                (error, results) => {
+                                    console.log(progress)
+                                    res.redirect('/notes')
+                                }
+                            )
+                        }
+                    )
+                }
+            )
         }
     )
 })
