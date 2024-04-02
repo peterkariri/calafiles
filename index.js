@@ -426,6 +426,36 @@ app.get('/progress', (req, res) => {
     )
 })
 
+app.get('/edit-user', (req, res) => {
+    loginRequired(req, res)
+    let sql = 'SELECT * FROM user WHERE id = ?'
+        connection.query(
+            sql,
+            [req.session.userID],
+            (error, results) => {
+                
+    res.render('edit-user', {user: results[0], error: false})
+            }
+        )
+})
+
+app.post('/update-profile', uploadProfile.single('profile-picture'), (req, res) => {
+    loginRequired(req, res)
+    const user = {
+        name: req.body.name,
+        email: req.body.email,
+        profile: req.file.filename
+    }
+    let sql = 'UPDATE user SET name = ?, email = ?, profilepicture = ? WHERE id = ?'
+    connection.query(
+        sql,
+        [user.name, user.email, user.profile, req.session.userID],
+        (error, results) => {
+            res.redirect('/progress')
+        }
+    )
+})
+
 app.get('/add-pdf', (req, res) => {
     loginRequired(req, res)
     res.render('add-pdf', {error: false})
