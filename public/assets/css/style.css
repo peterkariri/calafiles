@@ -450,6 +450,116 @@ h6 {
     transition: 0.3s;
 }
 
+.resourcesMain {
+    border: 2px solid #900020;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+.resourceid {
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 300px;
+    justify-content: space-between;
+    gap: 20px;
+    border-bottom: 2px solid #900020;
+    text-transform: uppercase;
+    color: #2B0009;
+    padding: 2px 5px;
+    font-size: 22px;
+}
+.resourceid .edit-delete, .resourceid .activate {
+    width: fit-content;
+    padding: 0 5px;
+    font-size: 19px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.resourceid .edit-delete a {
+    text-decoration: none;
+    background-color: #005b00;
+    text-transform: capitalize;
+    color: #ffede4;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+.resourceid .edit-delete input {
+    font-size: 19px;
+    text-transform: capitalize;
+    background-color: red;
+    border: 1px solid red;
+    color: #ffede4;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+.restorersc {
+    font-size: 19px;
+    text-transform: capitalize;
+    background-color: #005b00;
+    border: 1px solid #005b00;
+    color: #ffede4;
+    padding: 2px 5px;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
+
+.resourceid .activate .activateuser {
+    font-size: 19px;
+    text-transform: capitalize;
+    background-color: #005b00;
+    border: 1px solid #005b00;
+    color: #ffede4;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+.resourceid .activate .deactivateuser {
+    font-size: 19px;
+    text-transform: capitalize;
+    background-color: #900020;
+    border: 1px solid #900020;
+    color: #ffede4;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+
+.resourceactive {
+    background-color: #90ee90;
+    border-radius: 15px 15px 0 0;
+}
+
+.resourceinactive {
+    background-color: #f08080;
+    border-radius: 15px 15px 0 0;
+}
+
+.keyactive {
+    background-color: #90ee90;
+    /* border-radius: 0 0 15px 15px; */
+}
+
+.keyinactive {
+    background-color: #f08080;
+    /* border-radius: 0 0 15px 15px; */
+}
+
+table {
+    width: fit-content;
+    margin: 5px 0;
+}
+
+.th {
+    border: 1px solid #900020;
+    /* border-radius: 15px 15px 0 0; */
+    text-align: left;
+    padding: 0 6px;
+}
+
 .done-btn {
     font-size: 14px;
     letter-spacing: 0.5px;

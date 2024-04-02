@@ -1,0 +1,62 @@
+<!-- ======= Header Section ======= -->
+<%- include('partials/header') %> 
+<!-- End Header -->
+
+    <!-- ======= Navbar Section ======= -->
+        <%- include('partials/nav') %>
+    <!-- End Navbar -->
+
+    <!-- ======= Main Section ======= -->
+        <main id="main">
+            <section id="contact" class="contact">
+                <div class="container" data-aos="fade-up">
+                    <div class="section-title">
+                        <h2>MANAGER</h2>
+                        <p>Manage user information, activate or deactivate users, give admin capabilities to users</p>
+                    </div>
+                    <div>
+                        <h1>Total users: <%= users.length %></h1>
+                        <table>
+                            <thead>
+                                <th colspan="2"><i>Color Code:</i></th>
+                                <tr>
+                                    <th class="keyactive th">Active</th>
+                                    <th class="keyinactive th">Inactive</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <% users.forEach(user => { %>
+                            <div class="resourcesMain">
+                                <div class="resourceid resource<%= user.isactive %>">
+                                    <p><%= users.indexOf(user)+1 %>. ES<%= user.id %>-<%= user.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %>: <%= user.name %>: <%= user.isactive %></p>
+                                    <div class="activate">
+                                        <form action="/activateuser/<%= user.id %>" method="post">
+                                            <input class="activateuser" type="submit" value="activate">
+                                        </form>
+                                        <form action="/deactivateuser/<%= user.id %>" method="post">
+                                            <input class="deactivateuser" type="submit" value="Deactivate">
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="resources">
+                                    <div class="resourceInfo progress-container-manager">
+                                        <div class="progress-container">
+                                            <div class="progress-label">Progress: <%= user.progress %>%</div>
+                                            <progress class="progress-bar" value="<%= user.progress %>" max="100"><%= user.progress %></progress>
+                                        </div>
+                                    </div>
+                                    <div class="resourceInfo">
+                                        <p><b>Email: </b> <%= user.email %></p>
+                                    </div>
+                                    <div class="resourceInfo">
+                                        <p><b>Joined on:</b> <%= (new Date(user.timestamp)).toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric", hour12: true }) + ' ' + (new Date(user.timestamp)).toLocaleDateString("en-US", { month: "numeric", day: "numeric", year: "numeric" }) %></p>
+                                    </div>                          
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </section>            
+        </main>
+    <!-- End #main -->
+<%- include('partials/ending') %>

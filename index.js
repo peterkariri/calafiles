@@ -6,6 +6,7 @@ const multer = require('multer')
 const dotenv = require('dotenv')
 const nodemailer = require('nodemailer')
 const path = require('path')
+const e = require('express')
 
 const app = express()
 
@@ -138,10 +139,10 @@ app.get('/', (req, res) => {
 
 app.get('/signup', (req, res) => {
     const user = {
-        name: 'Shikuku',
-        email: 'enshikuku@gmail.com',
-        password: '2',
-        confirmpassword: '2'
+        name: '',
+        email: '',
+        password: '',
+        confirmpassword: ''
     }
     res.render('signup', { error: false, user: user })
 })
@@ -455,6 +456,126 @@ app.post('/update-profile', uploadProfile.single('profile-picture'), (req, res) 
         }
     )
 })
+
+app.get('/admin', (req, res) => {
+    loginRequired(req, res)
+    const user = {
+        email: '',
+        password: ''
+    }
+    let sql = 'SELECT tutor FROM user WHERE id = ?'
+    connection.query(
+        sql,
+        [req.session.userID],
+        (error, results) => {
+            if (results[0].tutor === 1) {
+                let sql = 'SELECT * FROM user'
+                connection.query(
+                    sql,
+                    (error, results) => {
+                        res.render('manager', {error: false, users: results})
+                    }
+                )
+            } else {
+                res.render('admin', {user: user, error: false})
+            }
+        }
+    )
+})
+
+app.post('/admin', (req, res) => {
+    loginRequired(req, res)
+    const user = {
+        email: req.body.email,
+        password: req.body.password
+    }
+    let sql = 'SELECT * FROM user WHERE email = ?'
+    connection.query(sql, [user.email], (error, results) => {
+        if (results.length > 0) {
+            if (user.password === process.env.ADMINPASSCODE) {
+                let sql = 'UPDATE user SET tutor = true WHERE id = ?'
+                connection.query(
+                    sql,
+                    [req.session.userID],
+                    (error, results) => {
+                        let sql = 'SELECT * FROM user'
+                        connection.query(
+                            sql,
+                            (error, results) => {
+                                res.render('manager', {error: false, users: results})
+                            }
+                        )
+                    }
+                )
+            } else {
+                let message = 'Wrong Admin Passcode'
+                res.render('admin', {error: true, user: user, message: message})
+            }
+        } else {
+            res.redirect('/logout')
+        }
+    })
+})
+
+
+// activate admin
+app.post('/activateadmin/:a_id', (req, res) => {
+    let adminPin = req.params.a_id
+    let sessionLiveAdmin = req.session.userID
+    if (parseInt(adminPin, 10) === sessionLiveAdmin) {
+        connection.query(
+            'SELECT * FROM e_admininfo',
+            [],
+            (error, results) => {
+                let message = 'You cannot activate yourself'
+                res.render('adminmanager', { error: true, message: message, results: results })
+            }
+        )
+    } else {
+        connection.query (
+            "UPDATE e_admininfo SET isactive = 'active' WHERE a_id = ?",
+            [adminPin],
+            (error, results) => {
+                if (error) {
+                    console.error("Error activating admin:", error)
+                    res.status(500).send("Error activating admin")
+                } else {
+                    res.redirect('/adminmanager')
+                }
+            }
+        )
+    }
+})
+
+// deactivate admin
+app.post('/deactivateadmin/:a_id', (req, res) => {
+    let adminPin = req.params.a_id
+    let sessionLiveAdmin = req.session.userID
+    if (parseInt(adminPin, 10) === sessionLiveAdmin) {
+        connection.query(
+            'SELECT * FROM e_admininfo',
+            [],
+            (error, results) => {
+                let message = 'You cannot deactivate yourself'
+                res.render('adminmanager', { error: true, message: message, results: results })
+            }
+        )
+    } else {
+        connection.query (
+            "UPDATE e_admininfo SET isactive = 'inactive' WHERE a_id = ?",
+            [req.params.a_id],
+            (error, results) => {
+                if (error) {
+                    console.error("Error deactivating admin:", error)
+                    res.status(500).send("Error deactivating admin")
+                } else {
+                    res.redirect('/adminmanager')
+                }
+            }
+        )
+    }
+})
+
 
 app.get('/add-pdf', (req, res) => {
     loginRequired(req, res)
