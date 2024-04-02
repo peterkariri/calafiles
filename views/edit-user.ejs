@@ -1,0 +1,45 @@
+<!-- ======= Header Section ======= -->
+<%- include('partials/header') %> 
+<!-- End Header -->
+
+    <!-- ======= Navbar Section ======= -->
+        <%- include('partials/nav') %>
+    <!-- End Navbar -->
+
+    <!-- ======= Main Section ======= -->
+        <main id="main">
+            <section id="contact" class="contact">
+                <div class="container" data-aos="fade-up">
+                    <div class="section-title">
+                        <h2>Edit Profile</h2>
+                        <p>Update your profile information</p>
+                    </div>
+                    <form action="/update-profile" method="post" enctype="multipart/form-data" class="php-email-form">
+                        <% if(error){ %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= message %>
+                            </div>
+                        <% } %>
+                        <div class="row gy-2 gx-md-3">
+                            <div class="col-md-6 form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Enter your name" required />
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email" required />
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="profile-picture">Profile Picture</label>
+                                <input type="file" class="form-control" name="profile-picture" id="profile-picture" accept="image/*" />
+                            </div>
+                            <div class="text-center col-12">
+                                <button type="submit">Save Changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>            
+        </main>
+    <!-- End #main -->
+<%- include('partials/ending') %>
