@@ -519,57 +519,57 @@ app.post('/admin', (req, res) => {
 
 
 // activate admin
-app.post('/activateadmin/:a_id', (req, res) => {
-    let adminPin = req.params.a_id
+app.post('/activateuser/:id', (req, res) => {
+    let adminPin = req.params.id
     let sessionLiveAdmin = req.session.userID
     if (parseInt(adminPin, 10) === sessionLiveAdmin) {
         connection.query(
-            'SELECT * FROM e_admininfo',
+            'SELECT * FROM user',
             [],
             (error, results) => {
                 let message = 'You cannot activate yourself'
-                res.render('adminmanager', { error: true, message: message, results: results })
+                res.render('manager', { error: true, message: message, results: results })
             }
         )
     } else {
         connection.query (
-            "UPDATE e_admininfo SET isactive = 'active' WHERE a_id = ?",
+            "UPDATE user SET isactive = 'active' WHERE id = ?",
             [adminPin],
             (error, results) => {
                 if (error) {
                     console.error("Error activating admin:", error)
                     res.status(500).send("Error activating admin")
                 } else {
-                    res.redirect('/adminmanager')
+                    res.redirect('/manager')
                 }
             }
         )
     }
 })
 
-// deactivate admin
-app.post('/deactivateadmin/:a_id', (req, res) => {
-    let adminPin = req.params.a_id
+// deactivate user
+app.post('/deactivateuser/:id', (req, res) => {
+    let adminPin = req.params.id
     let sessionLiveAdmin = req.session.userID
     if (parseInt(adminPin, 10) === sessionLiveAdmin) {
         connection.query(
-            'SELECT * FROM e_admininfo',
+            'SELECT * FROM user',
             [],
             (error, results) => {
                 let message = 'You cannot deactivate yourself'
-                res.render('adminmanager', { error: true, message: message, results: results })
+                res.render('manager', { error: true, message: message, results: results })
             }
         )
     } else {
         connection.query (
-            "UPDATE e_admininfo SET isactive = 'inactive' WHERE a_id = ?",
-            [req.params.a_id],
+            "UPDATE user SET isactive = 'inactive' WHERE id = ?",
+            [req.params.id],
             (error, results) => {
                 if (error) {
                     console.error("Error deactivating admin:", error)
                     res.status(500).send("Error deactivating admin")
                 } else {
-                    res.redirect('/adminmanager')
+                    res.redirect('/manager')
                 }
             }
         )

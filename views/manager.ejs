@@ -25,10 +25,17 @@
                                 </tr>
                             </thead>
                         </table>
+                        <form action="/admin" method="post" role="form" class="php-email-form">
+                            <% if(error){ %>
+                                <div class="alert alert-danger" role="alert">
+                                    <%= message %>
+                                </div>
+                            <% } %>
+                        </form>
                         <% users.forEach(user => { %>
                             <div class="resourcesMain">
                                 <div class="resourceid resource<%= user.isactive %>">
-                                    <p><%= users.indexOf(user)+1 %>. ES<%= user.id %>-<%= user.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %>: <%= user.name %>: <%= user.isactive %></p>
+                                    <p><%= users.indexOf(user)+1 %>. <%= user.id %>-<%= user.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %>: <%= user.name %>: <%= user.isactive %></p>
                                     <div class="activate">
                                         <form action="/activateuser/<%= user.id %>" method="post">
                                             <input class="activateuser" type="submit" value="activate">
