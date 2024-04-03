@@ -184,7 +184,7 @@ app.post('/signup', async(req, res) => {
                             from: process.env.EMAIL,
                             to: user.email,
                             subject: 'Welcome to CALAFILES - Your Personalized Learning Platform',
-                            text: `Dear ${user.name},\n\nWelcome to calafiles! Your One-Time Password (OTP) for account verification is ${OTP}. This OTP will expire in 10 minutes.\n\nHappy learning!\n\nBest regards,\nThe CALAFILES Team`
+                            text: `Dear ${user.name},\n\nWelcome to CALAFILES! Your One-Time Password (OTP) for account verification is ${OTP}. This OTP will expire in 10 minutes.\n\nHappy learning!\n\nBest regards,\nThe CALAFILES Team`
                         }
                         sendMail(mailData)
                         console.log('OTP inserted')
