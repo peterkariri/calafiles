@@ -218,15 +218,26 @@ app.post('/verify-otp', (req, res) => {
         id: req.body.id,
         otp: req.body.otp
     }
-    let sql = 'SELECT * FROM otp WHERE otpcode = ? AND used = "false"'
-    connection.query(sql, [user.otp], (error, results) => {
+    let sqlSelect = 'SELECT * FROM otp WHERE otpcode = ? AND used = "false"'
+    connection.query(sqlSelect, [user.otp], (error, results) => {
         if (results.length > 0) {
-            let sql = 'INSERT INTO user (name, email, password, id) VALUES (?, ?, ?, ?)'
+            let sqlInsert = 'INSERT INTO user (name, email, password, id) VALUES (?, ?, ?, ?)'
             bcrypt.hash(user.password, 10, (err, hash) => {
-                connection.query(sql, [user.name, user.email, hash, user.id], (error, results) => {
-                    req.session.userID = user.id
-                    req.session.username = user.name.split(' ')[0]
-                    res.redirect('/dashboard')
+                connection.query(sqlInsert, [user.name, user.email, hash, user.id], (error, results) => {
+                    if (error) {
+                        console.error('Error inserting user:', error)
+                        return res.status(500).send('Error inserting user')
+                    }
+                    let sqlUpdate = 'UPDATE otp SET used = "true" WHERE otpcode = ?'
+                    connection.query(sqlUpdate, [user.otp], (error, results) => {
+                        if (error) {
+                            console.error('Error updating OTP:', error)
+                            return res.status(500).send('Error updating OTP')
+                        }
+                        req.session.userID = user.id
+                        req.session.username = user.name.split(' ')[0]
+                        res.redirect('/dashboard')
+                    })
                 })
             })
         } else {
