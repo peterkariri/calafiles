@@ -234,6 +234,13 @@ app.post('/verify-otp', (req, res) => {
                             console.error('Error updating OTP:', error)
                             return res.status(500).send('Error updating OTP')
                         }
+                        const mailData = {
+                            from: process.env.EMAIL,
+                            to: user.email,
+                            subject: 'Welcome to CALAFILES - Your Personalized Learning Platform',
+                            text: `Dear ${user.name},\n\nWelcome to CALAFILES! Your account has been successfully created. Start your personalized learning journey today.\n\nIf you have any questions or need assistance, feel free to reach out to our support team.\n\nHappy learning!\n\nBest regards,\nThe CALAFILES Team`
+                        }
+                        sendMail(mailData)
                         req.session.userID = user.id
                         req.session.username = user.name.split(' ')[0]
                         res.redirect('/dashboard')
@@ -441,28 +448,119 @@ app.get('/edit-user', (req, res) => {
             sql,
             [req.session.userID],
             (error, results) => {
-                
-    res.render('edit-user', {user: results[0], error: false})
+                res.render('edit-user', {user: results[0], error: false})
             }
         )
 })
 
-app.post('/update-profile', uploadProfile.single('profile-picture'), (req, res) => {
+app.post('/update-profile', uploadProfile.single('profilepicture'), (req, res) => {
     loginRequired(req, res)
     const user = {
         name: req.body.name,
         email: req.body.email,
         profile: req.file.filename
     }
-    let sql = 'UPDATE user SET name = ?, email = ?, profilepicture = ? WHERE id = ?'
+    let sql = 'SELECT email FROM user WHERE id = ?'
     connection.query(
         sql,
-        [user.name, user.email, user.profile, req.session.userID],
+        [req.session.userID],
         (error, results) => {
-            res.redirect('/progress')
+            if (results[0].email === user.email) {
+                let sql = 'UPDATE user SET name = ?, profilepicture = ? WHERE id = ?'
+                connection.query(
+                    sql,
+                    [user.name, user.profile, req.session.userID],
+                    (error, results) => {
+                        res.redirect('/progress')
+                    }
+                )
+            } else {
+                let sql = 'SELECT * FROM user WHERE email = ?'
+                connection.query(sql, [user.email], (error, results) => {
+                    if (results.length > 0) {
+                        let message = 'An account exists with that email number!'
+                        res.render('edit-user', { error: true, message: message, user: user })
+                    } else {
+                        let OTP = generateotp()
+                        let otpsql = 'SELECT * FROM otp WHERE otpcode = ?'
+                        do {
+                            OTP = generateotp()
+                        } while (checkIfIdExists(OTP, otpsql))
+                        req.session.otp = OTP
+                        let otpsql2 = 'INSERT INTO otp (otpcode, email) VALUES (?, ?)'
+
+                        connection.query(otpsql2, [OTP, user.email], (error, results) => {
+                            if (error) {
+                                console.error('Error inserting OTP:', error)
+                            } else {
+                                const mailData = {
+                                    from: process.env.EMAIL,
+                                    to: user.email,
+                                    subject: 'Verify Your New Email Address for CALAFILES',
+                                    text: `Dear ${user.name},\n\nThank you for updating your email address on CALAFILES. Please use the following One-Time Password (OTP) to verify your new email address: ${OTP}. This OTP will expire in 10 minutes.\n\nIf you didn't request this change, please ignore this email.\n\nBest regards,\nThe CALAFILES Team`
+                                }
+                                sendMail(mailData)
+                                console.log('OTP inserted')
+                                res.render('otp-update', { error: false, user: user})
+                                setTimeout(() => {
+                                    const updateSql = 'UPDATE otp SET used = "true" WHERE otpcode = ?'
+                                    connection.query(updateSql, [OTP], (updateError, updateResults) => {
+                                        if (updateError) {
+                                            console.error('Error updating OTP status:', updateError)
+                                        } else {
+                                            console.log('OTP status updated to true')
+                                        }
+                                    })
+                                }, 10 * 60 * 1000)
+                            }
+                        })
+                    }
+                })
+            }
         }
     )
 })
+
+app.post('/verify-email-otp', (req, res) => {
+    const user = {
+        name: req.body.name,
+        email: req.body.email,
+        profile: req.body.profile,
+        otp: req.body.otp
+    }
+    let sqlSelect = 'SELECT * FROM otp WHERE otpcode = ? AND used = "false"'
+    connection.query(sqlSelect, [user.otp], (error, results) => {
+        if (results.length > 0) {
+            let sql = 'UPDATE user SET name = ?, email = ?, profilepicture = ? WHERE id = ?'
+            connection.query(
+                sql,
+                [user.name, user.email, user.profile, req.session.userID],
+                (error, results) => {
+                    let sqlUpdate = 'UPDATE otp SET used = "true" WHERE otpcode = ?'
+                    connection.query(sqlUpdate, [user.otp], (error, results) => {
+                        if (error) {
+                            console.error('Error updating OTP:', error)
+                            return res.status(500).send('Error updating OTP')
+                        }
+                        const mailData = {
+                            from: process.env.EMAIL,
+                            to: user.email,
+                            subject: 'Profile Update Confirmation - CALAFILES',
+                            text: `Dear ${user.name},\n\nYour CALAFILES profile has been successfully updated. Thank you for keeping your information current.\n\nIf you have any further questions or need assistance, feel free to contact our support team.\n\nBest regards,\nThe CALAFILES Team`
+                        }
+                        sendMail(mailData)
+                        res.redirect('/progress')
+                    })
+                }
+            )
+        } else {
+            let message = 'Invalid OTP!'
+            res.render('otp', { error: true, message: message, user: user, newId: user.id })
+        }
+    })
+})
+
+
 
 app.get('/admin', (req, res) => {
     loginRequired(req, res)
