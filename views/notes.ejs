@@ -19,8 +19,9 @@
                 <% pdf.forEach(file => { %>
                     <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="<%= pdf.indexOf(file)+1 %>00">
                         <div class="icon-box">
-                            <h4 class="title"><a href="/preview/<%= file.filename %>"><%= file.title %></a></h4>
+                            <h4 class="title"><a href="/pdf/<%= file.filename %>" target="_blank" rel="noopener noreferrer"><%= file.title %></a></h4>
                             <p class="description"><%= file.def %></p>
+                            <a href="/pdf/<%= file.filename %>" target="_blank" rel="noopener noreferrer" style="font-weight: bold; margin: 5px 0;" class="download-link done-btn"><i class="bi bi-arrows-angle-expand"></i> Preview</a>
                             <div style="display: flex; justify-content: space-between;">
                                 <% if(file.user_id === locals.userID){ %>
                                     <a href="/pdf/<%= file.filename %>" download="<%= file.title %>" style="background-color: #82ccdd; color: black; font-weight: bold;" class="download-link done-btn" style="font-size: 15px;"><i class="bi bi-download"></i> Re-download</a>
