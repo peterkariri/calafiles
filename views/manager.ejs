@@ -19,10 +19,11 @@
                         <h1>Total users: <%= users.length %></h1>
                         <table>
                             <thead>
-                                <th colspan="2"><i>Color Code:</i></th>
+                                <th colspan="3"><i>Color Code:</i></th>
                                 <tr>
                                     <th class="keyactive th">Active</th>
                                     <th class="keyinactive th">Inactive</th>
+                                    <th class="keyinactive th" style="background-color: yellow;">Admin</th>
                                 </tr>
                             </thead>
                         </table>
@@ -56,15 +57,31 @@
                                 </div>
                             <% } else { %>
                                 <div class="resourcesMain">
-                                    <div class="resourceid resource<%= user.isactive %>">
+                                    <% if(user.tutor){ %>
+                                        <div class="resourceid resource<%= user.isactive %>"  style="background-color: yellow;">
+                                    <% } else { %>
+                                        <div class="resourceid resource<%= user.isactive %>">
+                                    <% } %>
                                         <p><%= users.indexOf(user)+1 %>. <%= user.id %>-<%= user.timestamp.toLocaleDateString("en-US", { year: "numeric" }).slice(-2) %>: <%= user.name %>: <%= user.isactive %></p>
                                         <div class="activate">
-                                            <form action="/activateuser/<%= user.id %>" method="post">
-                                                <input class="activateuser" type="submit" value="activate">
-                                            </form>
-                                            <form action="/deactivateuser/<%= user.id %>" method="post">
-                                                <input class="deactivateuser" type="submit" value="Deactivate">
-                                            </form>
+                                            <% if(user.isactive === 'active'){ %>
+                                                <% if(user.tutor){ %>
+                                                    <form action="/unmakeadmin/<%= user.id %>" method="post">
+                                                        <input class="deactivateuser" type="submit" value="Depose Admin">
+                                                    </form>
+                                                <% } else { %>
+                                                    <form action="/makeadmin/<%= user.id %>" method="post">
+                                                        <input class="activateuser" type="submit" value="Elevate to Admin">
+                                                    </form>
+                                                <% } %>
+                                                <form action="/deactivateuser/<%= user.id %>" method="post">
+                                                    <input class="deactivateuser" type="submit" value="Deactivate Account">
+                                                </form>
+                                            <% } else { %>
+                                                <form action="/activateuser/<%= user.id %>" method="post">
+                                                    <input class="activateuser" type="submit" value="activate account">
+                                                </form>
+                                            <% } %>
                                         </div>
                                     </div>
                                     <div class="resources">

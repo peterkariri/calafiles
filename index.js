@@ -517,6 +517,65 @@ app.get('/manager', (req, res) => {
     )
 })
 
+// make admin 
+app.post('/makeadmin/:id', (req, res) => {
+    let id = req.params.id
+    let sessionLiveAdmin = req.session.userID
+    if (id === sessionLiveAdmin) {
+        connection.query(
+            'SELECT * FROM user',
+            [],
+            (error, results) => {
+                let message = 'You cannot make yourself admin'
+                res.render('manager', { error: true, message: message, users: results })
+            }
+        )
+    } else {
+        connection.query (
+            "UPDATE user SET tutor = true WHERE id = ?",
+            [id],
+            (error, results) => {
+                if (error) {
+                    console.error("Error activating admin:", error)
+                    res.status(500).send("Error activating admin")
+                } else {
+                    res.redirect('/manager')
+                }
+            }
+        )
+    }
+})
+
+
+// make admin 
+app.post('/unmakeadmin/:id', (req, res) => {
+    let id = req.params.id
+    let sessionLiveAdmin = req.session.userID
+    if (id === sessionLiveAdmin) {
+        connection.query(
+            'SELECT * FROM user',
+            [],
+            (error, results) => {
+                let message = 'You cannot unmake yourself as admin'
+                res.render('manager', { error: true, message: message, users: results })
+            }
+        )
+    } else {
+        connection.query (
+            "UPDATE user SET tutor = false WHERE id = ?",
+            [id],
+            (error, results) => {
+                if (error) {
+                    console.error("Error activating admin:", error)
+                    res.status(500).send("Error activating admin")
+                } else {
+                    res.redirect('/manager')
+                }
+            }
+        )
+    }
+})
+
 // activate 
 app.post('/activateuser/:id', (req, res) => {
     let id = req.params.id
