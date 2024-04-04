@@ -52,11 +52,13 @@ const uploadProfile = multer({ storage: profileStorage })
 const uploadPDF = multer({ storage: pdfStorage })
 
 app.use((req, res, next) => {
-    res.locals.username = req.session.username !== undefined ? req.session.username : 'Guest';
-    res.locals.isLoggedIn = req.session.userID !== undefined;
-    res.locals.userID = req.session.userID;
-    next();
-});
+    res.locals.username = req.session.username !== undefined ? req.session.username : 'Guest'
+    res.locals.isLoggedIn = req.session.userID !== undefined
+    res.locals.userID = req.session.userID
+    res.locals.tutor = req.session.tutor !== undefined ? req.session.tutor : false
+    next()
+})
+
 
 
 function loginRequired(req, res) {
@@ -522,6 +524,7 @@ app.post('/update-profile', uploadProfile.single('profilepicture'), (req, res) =
 })
 
 app.post('/verify-email-otp', (req, res) => {
+    loginRequired(req, res)
     const user = {
         name: req.body.name,
         email: req.body.email,
@@ -603,6 +606,7 @@ app.post('/admin', (req, res) => {
                     sql,
                     [req.session.userID],
                     (error, results) => {
+                        req.session.tutor = true
                         res.redirect('/manager')
                     }
                 )
@@ -617,17 +621,31 @@ app.post('/admin', (req, res) => {
 })
 
 app.get('/manager', (req, res) => {
-    let sql = 'SELECT * FROM user'
+    loginRequired(req, res)
+    let sql = 'SELECT tutor FROM user WHERE id = ?'
     connection.query(
         sql,
+        [req.session.userID],
         (error, results) => {
-            res.render('manager', {error: false, users: results})
+            if (results[0].tutor === 1) {
+                let sql = 'SELECT * FROM user'
+                connection.query(
+                    sql,
+                    (error, results) => {
+                        req.session.tutor = true
+                        res.render('manager', {error: false, users: results})
+                    }
+                )
+            } else {
+                res.redirect('/notes')
+            }
         }
     )
 })
 
 // make admin 
 app.post('/makeadmin/:id', (req, res) => {
+    loginRequired(req, res)
     let id = req.params.id
     let sessionLiveAdmin = req.session.userID
     if (id === sessionLiveAdmin) {
@@ -656,8 +674,9 @@ app.post('/makeadmin/:id', (req, res) => {
 })
 
 
-// make admin 
+// unmake admin 
 app.post('/unmakeadmin/:id', (req, res) => {
+    loginRequired(req, res)
     let id = req.params.id
     let sessionLiveAdmin = req.session.userID
     if (id === sessionLiveAdmin) {
@@ -687,6 +706,7 @@ app.post('/unmakeadmin/:id', (req, res) => {
 
 // activate 
 app.post('/activateuser/:id', (req, res) => {
+    loginRequired(req, res)
     let id = req.params.id
     let sessionLiveAdmin = req.session.userID
     if (id === sessionLiveAdmin) {
@@ -716,6 +736,7 @@ app.post('/activateuser/:id', (req, res) => {
 
 // deactivate user
 app.post('/deactivateuser/:id', (req, res) => {
+    loginRequired(req, res)
     let id = req.params.id
     let sessionLiveAdmin = req.session.userID
     if (id === sessionLiveAdmin) {
@@ -746,7 +767,11 @@ app.post('/deactivateuser/:id', (req, res) => {
 
 app.get('/add-pdf', (req, res) => {
     loginRequired(req, res)
-    res.render('add-pdf', {error: false})
+    if (req.session.tutor) {
+        res.render('add-pdf', {error: false})
+    } else {
+        res.redirect('/notes')
+    }
 })
 
 app.post('/upload-pdf', uploadPDF.single('pdf'), (req, res) => {
