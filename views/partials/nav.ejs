@@ -10,13 +10,16 @@
                     <li><a class="nav-link scrollto" href="/chatroom">Chatroom</a></li>
                     <li><a class="nav-link scrollto" href="/edit-user">Edit Profile</a></li>
                     <li><a class="nav-link scrollto" href="/admin">Admin</a></li>
+                    <% if(locals.tutor) { %>
+                        <li><a class="nav-link scrollto" href="/add-pdf">Upload PDF</a></li>
+                    <% } %>
                     <li><a class="nav-link scrollto" href="/logout">Logout</a></li>
                 <% } else { %>
                     <li><a class="nav-link scrollto active" href="/">Home</a></li>
                     <li><a class="nav-link scrollto" href="/login">Login</a></li>
                     <li><a class="nav-link scrollto" href="/signup">Signup</a></li>
+                    <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
                 <% } %>
-                <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav>
