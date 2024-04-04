@@ -1,12 +1,11 @@
 const express = require('express')
 const mysql = require('mysql')
-const session = require('express-session')
+const session = require('express-session')                                                               
 const bcrypt = require('bcrypt')
 const multer = require('multer')
 const dotenv = require('dotenv')
 const nodemailer = require('nodemailer')
 const path = require('path')
-const e = require('express')
 
 const app = express()
 
