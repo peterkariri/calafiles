@@ -303,7 +303,18 @@ app.get('/notes', (req, res) => {
             'active'
         ],
         (error, pdf) => {
-            res.render('notes', {pdf: pdf})
+            let sql = 'SELECT tutor FROM user WHERE id = ?'
+            connection.query(
+                sql,
+                [req.session.userID],
+                (error, results) => {
+                    if (results[0].tutor === 1) {
+                        res.render('notes', {pdf: pdf, tutor: true})
+                    } else {
+                        res.render('notes', {pdf: pdf, tutor: false})
+                    }
+                }
+            )
         }
     )
 })
@@ -390,26 +401,42 @@ app.post('/undo', (req, res) => {
     )
 })
 
-app.get('/preview/:filename', (req, res) => {
+app.post('/delete-pdf/:id', (req, res) => {
     loginRequired(req, res)
-    let filename = req.params.filename
-    let sql = 'SELECT * FROM pdf WHERE filename = ?'
+    let id = req.params.id
+    let sql = 'UPDATE pdf SET isactive = ? WHERE id = ?'
     connection.query(
         sql,
-        [filename],
+        ['inactive', id],
         (error, results) => {
-            res.render('preview', {file: results[0]})
+            if (error) {
+                console.error('Error deleting pdf:', error)
+                return res.status(500).send('Error deleting pdf')
+            }
+            res.redirect('/notes')
         }
     )
 })
 
 app.get('/chatroom', (req, res) => {
     loginRequired(req, res)
-    let sql = 'SELECT chatroom.message, chatroom.timestamp, chatroom.user_id, user.name, user.tutor FROM chatroom JOIN user ON chatroom.user_id = user.id ORDER BY chatroom.timestamp DESC'
+    let sql = 'SELECT chatroom.message, chatroom.message_id, chatroom.timestamp, chatroom.user_id, user.name, user.tutor FROM chatroom JOIN user ON chatroom.user_id = user.id WHERE chatroom.isactive = ? ORDER BY chatroom.timestamp DESC'
     connection.query(
         sql,
-        (error, results) => {
-            res.render('chatroom', {messages: results, error: false})
+        ['active'],
+        (error, messages) => {
+            let sql = 'SELECT tutor FROM user WHERE id = ?'
+            connection.query(
+                sql,
+                [req.session.userID],
+                (error, results) => {
+                    if (results[0].tutor === 1) {
+                        res.render('chatroom', {messages: messages, tutor: true, error: false})
+                    } else {
+                        res.render('chatroom', {messages: messages, tutor: false, error: false})
+                    }
+                }
+            )
         }
     )
 })
@@ -425,6 +452,23 @@ app.post('/send-message', (req, res) => {
         sql,
         [message.user, message.content],
         (error, results) => {
+            res.redirect('/chatroom')
+        }
+    )
+})
+
+app.post('/delete-message/:id', (req, res) => {
+    loginRequired(req, res)
+    let id = req.params.id
+    let sql = 'UPDATE chatroom SET isactive = ? WHERE message_id = ?'
+    connection.query(
+        sql,
+        ['inactive', id],
+        (error, results) => {
+            if (error) {
+                console.error('Error deleting message:', error)
+                return res.status(500).send('Error deleting message')
+            }
             res.redirect('/chatroom')
         }
     )
@@ -801,7 +845,7 @@ app.get('*', (req, res) => {
     res.render('404')
 })
 
-const PORT = process.env.PORT || 311
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 })
