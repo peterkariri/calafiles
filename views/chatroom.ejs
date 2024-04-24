@@ -50,11 +50,17 @@
                                     <div class="msg_cotainer_send" style="width: 250px; background-color: yellow;">
                                         <%= message.message %>
                                         <span class="msg_time"><span><%= message.name.split(' ')[0] %></span> <span><%= timeStr + ', ' + dateStr %></span></span>
+                                        <form action="/delete-message/<%= message.message_id %>" style="margin: 4px 0;" method="post">
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete <i class="bi bi-trash"></i></button>
+                                        </form>
                                     </div>
                                 <% } else { %>
                                     <div class="msg_cotainer_send" style="width: 250px;">
                                         <%= message.message %>
                                         <span class="msg_time"><span><%= message.name.split(' ')[0] %></span> <span><%= timeStr + ', ' + dateStr %></span></span>
+                                        <form action="/delete-message/<%= message.message_id %>" style="margin: 4px 0;" method="post">
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete <i class="bi bi-trash"></i></button>
+                                        </form>
                                     </div>
                                 <% } %>
                             </div>
@@ -64,11 +70,21 @@
                                     <div class="msg_cotainer" style="width: 250px; background-color: yellow;">
                                         <%= message.message %>
                                         <span class="msg_time"><span><%= message.name.split(' ')[0] %></span> <span><%= timeStr + ', ' + dateStr %></span></span>
+                                        <% if (tutor) { %>
+                                            <form action="/delete-message/<%= message.message_id %>" style="margin: 4px 0;" method="post">
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete <i class="bi bi-trash"></i></button>
+                                            </form>
+                                        <% } %>
                                     </div>
                                 <% } else { %>
                                     <div class="msg_cotainer" style="width: 250px;">
                                         <%= message.message %>
                                         <span class="msg_time"><span><%= message.name.split(' ')[0] %></span> <span><%= timeStr + ', ' + dateStr %></span></span>
+                                        <% if (tutor) { %>
+                                            <form action="/delete-message/<%= message.message_id %>" style="margin: 4px 0;" method="post">
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete <i class="bi bi-trash"></i></button>
+                                            </form>
+                                        <% } %>
                                     </div>
                                 <% } %>
                             </div>
