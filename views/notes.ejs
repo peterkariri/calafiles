@@ -39,6 +39,11 @@
                                     </form>
                                 <% } %>
                             </div>
+                            <% if (tutor) { %>
+                                <form action="/delete-pdf/<%= file.id %>" style="margin: 4px 0;" method="post">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete <i class="bi bi-trash"></i></button>
+                                </form>
+                            <% } %>
                             <embed src="/pdf/<%= file.filename %>" type="application/pdf" class="pdf-preview"/>
                         </div>
                     </div>
